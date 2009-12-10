@@ -5,6 +5,8 @@ The Api class is part of python-bitly (http://code.google.com/p/python-bitly)
 and is reused here in accordance with the Apache license.
 
 ~ Corbin Simpson <simpsoco@osuosl.org>
+
+TODO: Make the borrowed bitly code suck less.
 """
 
 try:
@@ -213,6 +215,7 @@ import re
 
 from zope.interface import implements
 from twisted.plugin import IPlugin
+from twisted.internet import defer, reactor
 
 from hackabot.plugin import IHackabotPlugin
 from hackabot import log
@@ -242,11 +245,15 @@ class BitLy(object):
 
             log.debug("bitly: Got URL %s" % url)
 
-            shortened = self.api.shorten(url)
-
-            conn.msg(event['reply_to'],
-                "%s's tiny URL is %s" % (event["sent_by"], shortened))
+            d = defer.Deferred()
+            d.addCallback(self.api.shorten)
+            d.addCallback(self._reply_with_shortened_url, conn, event)
+            reactor.callLater(0, d.callback, url)
 
     me = msg
+
+    def _reply_with_shortened_url(self, url, conn, event):
+        conn.msg(event['reply_to'],
+            "%s's tiny URL is %s" % (event["sent_by"], url))
 
 bitly = BitLy()
