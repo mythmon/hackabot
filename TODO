@@ -1,0 +1,10 @@
+Downstream:
+
+- OSUOSL's hackabot, manatee on Freenode, has tons of random hacks that are
+  not in this tree yet.
+
+Enhancements:
+
+- There's still plenty of hacks that need to be turned into plugins.
+
+- It'd sure be nice if SQLite could be used instead of MySQL for the backend.
