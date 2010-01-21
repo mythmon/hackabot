@@ -220,7 +220,7 @@ from twisted.internet import defer, reactor
 from hackabot.plugin import IHackabotPlugin
 from hackabot import log
 
-URL_MIN_LENGTH = 20
+URL_MIN_LENGTH = 50
 
 class BitLy(object):
     """
