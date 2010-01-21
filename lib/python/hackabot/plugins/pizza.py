@@ -5,29 +5,30 @@ Tally pizza votes for LUG.
 """
 
 import operator
+import shelve
 
 from zope.interface import implements
 from twisted.plugin import IPlugin
 from hackabot.plugin import IHackabotPlugin
 from hackabot import log
 
-toppings = [
-    "bacon",
-    "green peppers",
-    "mushrooms",
-    "pepperoni",
-]
-
 class Pizza(object):
     implements(IPlugin, IHackabotPlugin)
 
     def __init__(self):
-        self.toppings = {}
         self.reset()
 
+    def save(self):
+        shelf = shelve.open("pizza")
+        toppings_only = dict((i, 0) for i in self.toppings)
+        shelf.update(toppings_only)
+        shelf.sync()
+        shelf.close()
+
     def reset(self):
-        for topping in toppings:
-            self.toppings[topping.lower()] = 0
+        shelf = shelve.open("pizza")
+        self.toppings = dict(shelf)
+        shelf.close()
 
     def leaders(self, count):
         # XXX
@@ -37,10 +38,14 @@ class Pizza(object):
     def command_pizza(self, conn, event):
         """
         Control pizza tallies.
-        !pizza [list | reset]
+        !pizza [add <topping> | list | reset]
         """
 
-        if event["text"] == "list":
+        if event["text"].startswith("add"):
+            new_topping = event["text"].split(" ", 1)[1].lower()
+            self.toppings[new_topping] = 0
+            self.save()
+        elif event["text"] == "list":
             conn.msg(event["reply_to"],
                 "Toppings: %s" % ", ".join(self.toppings))
         elif event["text"] == "reset":
