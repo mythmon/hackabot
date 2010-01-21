@@ -47,10 +47,17 @@ class Pizza(object):
             self.reset()
             conn.msg(event["reply_to"], "Reset tallies!")
         else:
-            top_toppings = self.leaders(5)
-            conn.msg(event["reply_to"], "Top 5:")
+            count = 5
+            if event["text"]:
+                try:
+                    count = int(event["text"])
+                except ValueError:
+                    pass
+            top_toppings = self.leaders(count)
+            conn.msg(event["reply_to"], "Top %d:" % count)
             for i, topping in enumerate(top_toppings):
-                conn.msg(event["reply_to"], "#%d: %s" % (i + 1, topping))
+                conn.msg(event["reply_to"], "#%d: %s (%d votes)"
+                    % (i + 1, topping, self.toppings[topping]))
 
     def msg(self, conn, event):
         if event["sent_by"] == conn.nickname:
