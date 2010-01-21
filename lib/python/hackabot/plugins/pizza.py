@@ -66,8 +66,12 @@ class Pizza(object):
         message = event["text"].lower()
         for topping in self.toppings:
             if topping in message:
-                log.debug("Incrementing %s" % topping)
-                self.toppings[topping] += 1
+                if "no " + topping in message or "not " + topping in message:
+                    log.debug("Decrementing %s" % topping)
+                    self.toppings[topping] -= 1
+                else:
+                    log.debug("Incrementing %s" % topping)
+                    self.toppings[topping] += 1
 
     me = msg
 
