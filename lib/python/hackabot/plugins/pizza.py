@@ -21,6 +21,7 @@ class Pizza(object):
     def save(self):
         shelf = shelve.open("pizza")
         toppings_only = dict((i, 0) for i in self.toppings)
+        shelf.clear()
         shelf.update(toppings_only)
         shelf.sync()
         shelf.close()
@@ -38,13 +39,17 @@ class Pizza(object):
     def command_pizza(self, conn, event):
         """
         Control pizza tallies.
-        !pizza [add <topping> | list | reset]
+        !pizza [add <topping> | (del|remove) <topping> | list | reset]
         """
 
         if event["text"].startswith("add"):
             new_topping = event["text"].split(" ", 1)[1].lower()
             self.toppings[new_topping] = 0
-            self.save()
+        elif event["text"].startswith(("del", "remove")):
+            topping_to_del = event["text"].split(" ", 1)[1].lower()
+            if topping_to_del in self.toppings:
+                del self.toppings[topping_to_del]
+                self.save()
         elif event["text"] == "list":
             conn.msg(event["reply_to"],
                 "Toppings: %s" % ", ".join(self.toppings))
