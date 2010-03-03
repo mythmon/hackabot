@@ -4,6 +4,7 @@ Display fortunes.
 ~ C.
 """
 
+import functools
 import os.path
 import subprocess
 
@@ -19,6 +20,7 @@ class Fortune(object):
     def __init__(self):
         self.fortune_dir = "/home/simpson/hackabot/misc/cookies"
         self.refresh_cache()
+        self.make_commands()
 
     def refresh_cache(self):
         l = os.listdir(self.fortune_dir)
@@ -33,17 +35,34 @@ class Fortune(object):
         fortune, chaff = p.communicate()
         return fortune
 
+    def dispatch(self, conn, event, db=None):
+        d = defer.Deferred()
+        d.addCallback(self.get_fortune)
+        d.addCallback(self.deferred_reply, conn, event)
+
+        reactor.callLater(0, d.callback, db)
+
+    def make_commands(self):
+        for f in self.files:
+            func = functools.partial(self.dispatch, db=f)
+            func.__doc__ = """
+                Retrieve a fortune.
+                !%s
+            """
+
+            setattr(self.__class__, "command_%s" % f, func)
+
     def command_fortune(self, conn, event):
         """
         Retrieve a fortune.
         !fortune (list | <type>)
         """
 
-        d = defer.Deferred()
-        d.addCallback(self.get_fortune)
-        d.addCallback(self.deferred_reply, conn, event)
-
-        reactor.callLater(0, d.callback, None)
+        if event["text"] == "list":
+            conn.msg(event["reply_to"],
+                "Fortunes: %s" % ", ".join(self.files))
+        else:
+            self.dispatch(conn, event)
 
     def deferred_reply(self, msg, conn, event):
         lines = msg.replace("\t", "    ").split("\n")
