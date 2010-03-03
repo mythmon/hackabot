@@ -39,13 +39,14 @@ class Pizza(object):
     def command_pizza(self, conn, event):
         """
         Control pizza tallies.
-        !pizza [add <topping> | (del|remove) <topping> | list | reset]
+        !pizza [add <topping> | remove <topping> | list | reset]
         """
 
         if event["text"].startswith("add"):
             new_topping = event["text"].split(" ", 1)[1].lower()
             self.toppings[new_topping] = 0
-        elif event["text"].startswith(("del", "remove")):
+            self.save()
+        elif event["text"].startswith("remove"):
             topping_to_del = event["text"].split(" ", 1)[1].lower()
             if topping_to_del in self.toppings:
                 del self.toppings[topping_to_del]
