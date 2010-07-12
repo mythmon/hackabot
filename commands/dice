@@ -31,16 +31,21 @@ def main():
     if msg:
         m = re.match(r'((\d*)d)?(\d*)(\+(\d*))?', msg)
         _, num, sides, _, add = m.groups()
-        num = int(num)
-        sides = int(sides)
-        add = int(add)
 
     if not num:
         num = 1
+    else:
+        num = int(num)
+
     if not sides:
         sides = 6
+    else:
+        sides = int(sides)
+
     if not add:
         add = 0
+    else:
+        add = int(add)
         
     result = roll(num,sides,add)
 
