@@ -44,7 +44,7 @@ def main():
         
     result = roll(num,sides,add)
 
-    print "%s: You got %s" % (nick, result)
+    print "msg %s: You got %s" % (nick, result)
 
 if __name__ == "__main__":
     main()
