@@ -2,7 +2,9 @@
 
 ##HACKABOT_HELP##
 # Get a limerick!
-# !limerick [number]
+# !bash msg [number]
+# or
+# !bash 
 ##HACKABOT_HELP##
 
 use strict;
@@ -11,9 +13,7 @@ my $url = "http://bash.org/?random2";
 my $quotesPerPage = 50;
 
 my $msg = <>;
-if (defined $msg and $msg =~ /^\s+\d+/) {
-    print "send $msg\n";
-    $msg = s/\s+//;
+if (defined $msg and $msg =~ /^msg\s+\d+/) {
     $url = "http://bash.org/?$1";
     $quotesPerPage = 1;
 }

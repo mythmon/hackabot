@@ -2,7 +2,9 @@
 
 ##HACKABOT_HELP##
 # Get a limerick!
-# !limerick [number]
+# !limerick msg [number]
+# or
+# !limerick
 ##HACKABOT_HELP##
 
 use strict;
@@ -10,7 +12,7 @@ use strict;
 my $url = "http://limerickdb.com/?random2";
 
 my $msg = <>;
-if (defined $msg and $msg =~ /\d+/) {
+if (defined $msg and $msg =~ /^msg\s+\d+/) {
     $url = "http://limerickdb.com/?$1";
 }
 
