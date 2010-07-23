@@ -10,7 +10,7 @@ use strict;
 my $url = "http://limerickdb.com/?random2";
 
 my $msg = <>;
-if (defined $msg and $msg =~ /^msg\s+(\d+)/) {
+if (defined $msg and $msg =~ /\d+/) {
     $url = "http://limerickdb.com/?$1";
 }
 
