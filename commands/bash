@@ -12,6 +12,7 @@ my $quotesPerPage = 50;
 
 my $msg = <>;
 if (defined $msg and $msg =~ /\s+\d+/) {
+    print "send $_\n";
     $msg = s/\s+//;
     $url = "http://bash.org/?$1";
     $quotesPerPage = 1;
