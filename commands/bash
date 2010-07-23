@@ -8,20 +8,25 @@
 use strict;
 
 my $url = "http://bash.org/?random2";
+my $quotesPerPage = 50;
 
 my $msg = <>;
 if (defined $msg and $msg =~ /^msg\s+(\d+)/) {
     $url = "http://bash.org/?$1";
+    $quotesPerPage = 1;
 }
 
 open(PAGE, "lynx -dump '$url' |");
 
+my $chosenQuote = int(rand($quotesPerPage));
 my $print = 0;
 while (<PAGE>) {
     s/^\s+//;
     s/\s+$//;
 
-    if (not $print and /^\[\d+\]#\d+/) {
+    # Since there is a blank line after the quote numbers, consume one blank
+    # line after finding a number.
+    if (not $print and /^\[\d+\]#\d+/ and not $chosenQuote--) {
         $print = 1;
     }
     elsif ($print == 1 and /^$/) {
