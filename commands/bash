@@ -11,7 +11,8 @@ my $url = "http://bash.org/?random2";
 my $quotesPerPage = 50;
 
 my $msg = <>;
-if (defined $msg and $msg =~ /\d+/) {
+if (defined $msg and $msg =~ /\s+\d+/) {
+    $msg = s/\s+//;
     $url = "http://bash.org/?$1";
     $quotesPerPage = 1;
 }
