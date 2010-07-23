@@ -2,7 +2,7 @@
 
 ##HACKABOT_HELP##
 # Get a bash quote!
-# !bash msg [number]
+# !bash [number]
 # or
 # !bash 
 ##HACKABOT_HELP##
