@@ -1,4 +1,0 @@
-#!/bin/bash
-
-env | grep ^HB >&2
-cat >&2

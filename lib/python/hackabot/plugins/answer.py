@@ -15,13 +15,13 @@ class Answer(object):
             "My sources say no.",
             "My sources say yes.",
             "Most likely not.",
-            "UMMM.. No.",
+            "Um, no.",
             "Without a doubt.",
             "Very doubtful.",
-            "No",
-            "Yes",
+            "No.",
+            "Yes.",
             "I don't care.",
-            "Heck Yea!",
+            "Heck yes!",
         )
 
     def msg(self, conn, event):
