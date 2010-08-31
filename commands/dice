@@ -12,10 +12,11 @@ import hackabot
 from hackabot.client import Client
 
 def roll(num,sides,add):
-    total = add
+    rolls = []
     for i in range(num):
-        total += random.randint(1,sides)
-    return total
+        rolls.append(random.randint(1,sides))
+    rolls.append(add)
+    return rolls
 
 def main():
     hbc = Client()
@@ -46,10 +47,21 @@ def main():
         add = 0
     else:
         add = int(add)
-        
+
     result = roll(num,sides,add)
 
-    print "msg %s: You got %s" % (nick, result)
+    output = ""
+    output += "msg %s: You rolled %sd%s+%s and got " % (nick, num, sides, add)
+    if len(result) < 11:
+        # the last one is the constant add
+        for die in result[:-1]:
+            output += "%s, " % die
+    else:
+        output += "a lot of dice "
+
+    output += "for a total of %s" % sum(result)
+    print output
+
 
 if __name__ == "__main__":
     main()
