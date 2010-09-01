@@ -11,7 +11,7 @@ from hackabot import log, plugins
 class PluginManager(object):
     """Keep an index of available plugins and call them"""
 
-    hook_types = ('msg', 'me', 'notice', 'topic', 'join', 'part',
+    hook_types = ('msg', 'me', 'notice', 'topic', 'join', 'part', 'fortune'
                   'kick', 'quit', 'rename', 'names', 'command')
 
     def __init__(self):
