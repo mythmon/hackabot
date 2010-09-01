@@ -18,7 +18,13 @@ class Fortune(object):
     implements(IPlugin, IHackabotPlugin)
 
     def __init__(self):
-        self.fortune_dir = "/home/simpson/hackabot/misc/cookies"
+        config = hbc.conf.find(".//plugins/fortune")
+
+        if config is None:
+            print "The fortune plugin has not been configured!"
+            sys.exit();
+
+        self.fortune_dir = config.get("directory")
         self.refresh_cache()
         self.make_commands()
 

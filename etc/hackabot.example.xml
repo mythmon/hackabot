@@ -69,6 +69,11 @@
         <weather location="02129"/>
     </commands>
 
+    <!-- Options for plugins -->
+    <plugins>
+        <fortune directory="/usr/share/fortune" />
+    </plugins>
+
     <!-- Options for external inputs (ie email) -->
     <external>
         <email-rt ticket="https://rt.example.com/Ticket/Display.html?id=" />
